@@ -1,4 +1,4 @@
-# README for VoltDB Ad Tracking application #
+# VoltDB Example App: Ad Performance#
 
 Use Case
 --------
@@ -14,6 +14,7 @@ The code is divided into two projects:
 
 - "db": the database project, which contains the schema, stored procedures and other configurations that are compiled into a catalog and run in a VoltDB database.  
 - "client": a java client that loads a set of cards and then generates random card transactions a high velocity to simulate card activity.
+- "web": a web dashboard client (static html page with dynamic content)
 
 See below for instructions on running these applications.  For any questions, 
 please contact fieldengineering@voltdb.com.
@@ -39,7 +40,9 @@ Instructions
     exec advertiser_summary 30;
     exec campaign_summary 30 1;
 
-5. To stop the database and clean up temp files
+5. Open the web/adperformance.html page in a web browser to view the real-time dashboard
+
+6. To stop the database and clean up temp files
 
     voltadmin shutdown
     ./clean.sh
