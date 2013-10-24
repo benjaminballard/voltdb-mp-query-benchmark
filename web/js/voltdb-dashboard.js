@@ -23,7 +23,7 @@ function formatDecimal2(n) {
     return (Math.round(parseFloat(n) * 100) / 100).toFixed(2);
 }
 
-function DrawTable(response, tableName) {
+function DrawTable(response, tableName, selectedRow) {
     try {
         var tables = response.results;
         var hmt = tables[0];
@@ -42,7 +42,11 @@ function DrawTable(response, tableName) {
         
         var tbodyhtml;
         for(var r=0;r<hmt.data.length;r++){ // for each row
-            tbodyhtml += '<tr>';
+            if (r==selectedRow) {
+                tbodyhtml += '<tr class="success">';
+            } else {
+                tbodyhtml += '<tr>';
+            }
             for (var c=0;c<colcount;c++) { // for each column
                 var f = hmt.data[r][c];
 
@@ -71,6 +75,12 @@ function SetRefreshInterval(interval) {
 $(document).ready(function(){
     con = VoltDB.AddConnection('localhost', 8080, false, null, null, false, (function(connection, success){}));
     SetRefreshInterval(1);
+
+    // $('#table_ad_sum > tbody > tr').click(function() {
+    //     // row was clicked
+    //     console.log("you clicked a row!");
+    // });
+
 });
 
 // Refresh drop-down actions
