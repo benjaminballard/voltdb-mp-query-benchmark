@@ -2,11 +2,12 @@
 
 . ./compile.sh
 
+HOST=localhost
 
 # start database in background
 LICENSE=$VOLTDB_HOME/voltdb/license.xml
 nohup voltdb create catalog ${CATALOG_NAME}.jar \
-    license $VOLTDB_HOME/voltdb/license.xml host localhost deployment deployment.xml license $LICENSE > log/nohup.log 2>&1 &
+    license $VOLTDB_HOME/voltdb/license.xml host $HOST deployment deployment.xml license $LICENSE > log/nohup.log 2>&1 &
 
 echo "VoltDB started"
 echo 

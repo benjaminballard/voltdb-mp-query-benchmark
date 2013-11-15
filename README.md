@@ -49,34 +49,40 @@ Options
 -------
 You can control the following characteristics of the demo by editing the run_client.sh script to modify the parameters passed into the InvestmentBenchmark java application.
 
-    --duration=120                   (benchmark duration in seconds)
-    --autotune=true                  (true = ignore rate limit, run at max throughput until latency is impacted)
-                                     (false = run at the specified rate limit)
-    --ratelimit=20000                (only operative when autotune=false, run no faster than this number of requests/second)
-    --sites=100                      (number of web sites)
-    --pagespersite=10                (number of pages per web site)
-    --advertisers=100                (number of advertisers)
-    --campaignsperadvertiser=10      (number of campaigns per advertiser)
-    --creativespercampaign=5         (number of creatives/banners per campaign)
+    --duration=120                (benchmark duration in seconds)
+    --autotune=true               (true = ignore rate limit, run at max throughput until latency is impacted)
+                                  (false = run at the specified rate limit)
+    --ratelimit=20000             (when autotune=false, run up to this rate of requests/second)
+    --sites=100                   (number of web sites)
+    --pagespersite=10             (number of pages per web site)
+    --advertisers=100             (number of advertisers)
+    --campaignsperadvertiser=10   (number of campaigns per advertiser)
+    --creativespercampaign=5      (number of creatives/banners per campaign)
 
 Instructions for running on a cluster
 -------------------------------------
 
-Before running this demo on a cluster, make the following changes:
+Before running this demo on a cluster, make the following changes **on each server**:
 
-1. In start_db.sh, change the “host” parameter from localhost:
+1. In start_db.sh, change the voltdb "host" parameter by changing the HOST variable from localhost:
         
-    license $VOLTDB_HOME/voltdb/license.xml host localhost deployment deployment.xml license $LICENSE > log/nohup.log 2>&1 &
+    HOST=localhost
     
-to the actual name of the first server in your cluster:
+to the actual name of the **first server** in your cluster:
     
-    license $VOLTDB_HOME/voltdb/license.xml host voltserver01 deployment deployment.xml license $LICENSE > log/nohup.log 2>&1 &
+    HOST=voltserver01
+    
+NOTE: all servers should have the same value for HOST, so they know where to connect to start the cluster.
 
 2. In db/deployment.xml, change hostcount from 1 to 2 (or the number of servers):
 
     <cluster hostcount="1" sitesperhost="3" kfactor="0" />
 
-3. In run_client.sh, change:
+4. To start the cluster, run the start script **on each server**:
+
+    ./start_db.sh
+    
+5. The client can be run on just one server, but to make it connect to all the servers in the cluster, edit run_client.sh to change:
 
     SERVERS=localhost
 
@@ -84,11 +90,7 @@ to:
 
     SERVERS=voltserver01,voltserver02
 
-4. To start the cluster, run the start script on each server:
-
-    ./start_db.sh
-    
-5. The client can be run on just one server, but it will connect to all the servers in the cluster.
+then to run the client:
 
     ./run_client.sh
 
