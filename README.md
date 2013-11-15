@@ -19,6 +19,13 @@ The code is divided into two projects:
 See below for instructions on running these applications.  For any questions, 
 please contact fieldengineering@voltdb.com.
 
+Pre-requisites
+--------------
+Before running these scripts you need to have VoltDB installed, and you should add the voltdb-$(VERSION)/bin directory to your PATH environment variable, for example:
+
+    export PATH="$PATH:$HOME/voltdb-$(VERSION)/bin"
+
+
 Instructions
 ------------
 
@@ -30,20 +37,58 @@ Instructions
 
     ./run_client.sh
 
-3. Open a web browser to VoltDB Studio
+3. Open the web/adperformance.html page in a web browser to view the real-time dashboard
 
-    http://localhost:8080/studio
-    
-4. Run the following SQL commands for real-time reporting:
-
-    SELECT * FROM advertiser_rates_minutely WHERE advertiser_id = 30;
-    exec advertiser_summary 30;
-    exec campaign_summary 30 1;
-
-5. Open the web/adperformance.html page in a web browser to view the real-time dashboard
-
-6. To stop the database and clean up temp files
+4. To stop the database and clean up temp files
 
     voltadmin shutdown
     ./clean.sh
+
+
+Options
+-------
+You can control the following characteristics of the demo by editing the run_client.sh script to modify the parameters passed into the InvestmentBenchmark java application.
+
+    --duration=120                   (benchmark duration in seconds)
+    --autotune=true                  (true = ignore rate limit, run at max throughput until latency is impacted)
+                                     (false = run at the specified rate limit)
+    --ratelimit=20000                (only operative when autotune=false, run no faster than this number of requests/second)
+    --sites=100                      (number of web sites)
+    --pagespersite=10                (number of pages per web site)
+    --advertisers=100                (number of advertisers)
+    --campaignsperadvertiser=10      (number of campaigns per advertiser)
+    --creativespercampaign=5         (number of creatives/banners per campaign)
+
+Instructions for running on a cluster
+-------------------------------------
+
+Before running this demo on a cluster, make the following changes:
+
+1. In start_db.sh, change the “host” parameter from localhost:
+        
+    license $VOLTDB_HOME/voltdb/license.xml host localhost deployment deployment.xml license $LICENSE > log/nohup.log 2>&1 &
+    
+to the actual name of the first server in your cluster:
+    
+    license $VOLTDB_HOME/voltdb/license.xml host voltserver01 deployment deployment.xml license $LICENSE > log/nohup.log 2>&1 &
+
+2. In db/deployment.xml, change hostcount from 1 to 2 (or the number of servers):
+
+    <cluster hostcount="1" sitesperhost="3" kfactor="0" />
+
+3. In run_client.sh, change:
+
+    SERVERS=localhost
+
+to:
+
+    SERVERS=voltserver01,voltserver02
+
+4. To start the cluster, run the start script on each server:
+
+    ./start_db.sh
+    
+5. The client can be run on just one server, but it will connect to all the servers in the cluster.
+
+    ./run_client.sh
 
