@@ -19,9 +19,20 @@ function RefreshTable2(){
                     );
 }
 
+function RefreshChart1(){
+    con.BeginExecute('advertiser_minutely_clicks',
+                     [30],
+                     function(response) { 
+                         DrawTimeBarChart(response,'#chart1'); 
+                     }
+                    );
+
+}
+
 function RefreshData(){
     RefreshTable1();
     RefreshTable2();
+    RefreshChart1();
 }
 
 // when you click to select a row

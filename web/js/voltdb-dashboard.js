@@ -1,19 +1,5 @@
 /*
- This file is part of VoltDB.
- Copyright (C) 2008-2013 VoltDB Inc.
-
- This program is free software: you can redistribute it and/or modify
- it under the terms of the GNU Affero General Public License as
- published by the Free Software Foundation, either version 3 of the
- License, or (at your option) any later version.
-
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Affero General Public License for more details.
-
- You should have received a copy of the GNU Affero General Public License
- along with VoltDB.  If not, see <http://www.gnu.org/licenses/>.
+ Copyright (C) 2013 VoltDB Inc.
 */
 
 var con;
@@ -26,14 +12,14 @@ function formatDecimal2(n) {
 function DrawTable(response, tableName, selectedRow) {
     try {
         var tables = response.results;
-        var hmt = tables[0];
-        var colcount = hmt.schema.length;
+        var t0 = tables[0];
+        var colcount = t0.schema.length;
         
         // the first time, initialize the table head
         if ($(tableName+' thead tr').length == 0) {
             var theadhtml = '<tr>';
             for (var i=0; i<colcount; i++) {
-                theadhtml += '<th>' + hmt.schema[i].name + '</th>';
+                theadhtml += '<th>' + t0.schema[i].name + '</th>';
             }
             $(tableName).append('<thead></thead>');
             $(tableName).append('<tbody></tbody>');
@@ -41,17 +27,17 @@ function DrawTable(response, tableName, selectedRow) {
         }
         
         var tbodyhtml;
-        for(var r=0;r<hmt.data.length;r++){ // for each row
+        for(var r=0;r<t0.data.length;r++){ // for each row
             if (r==selectedRow) {
                 tbodyhtml += '<tr class="success">';
             } else {
                 tbodyhtml += '<tr>';
             }
             for (var c=0;c<colcount;c++) { // for each column
-                var f = hmt.data[r][c];
+                var f = t0.data[r][c];
 
                 // if type is DECIMAL
-                if (hmt.schema[c].type == 22) {
+                if (t0.schema[c].type == 22) {
                     f = formatDecimal2(f);
                 }
                 tbodyhtml += '<td>' + f + '</td>';
@@ -61,6 +47,44 @@ function DrawTable(response, tableName, selectedRow) {
         $(tableName).children('tbody').html(tbodyhtml);
 
     } catch(x) {}
+}
+
+function DrawTimeBarChart(response, placeholder) {
+    //try {
+
+        var tables = response.results;
+        var t0 = tables[0];
+        var colcount = t0.schema.length;
+        var d1 = [];
+        var d2 = [];
+
+        for(var r=0;r<t0.data.length;r++){ // for each row
+            var time = t0.data[r][0]/1000;
+            var v1 = t0.data[r][1];
+            var v2 = t0.data[r][2];
+            d1.push([time,v1]);
+            d2.push([time,v2]);
+        }
+        
+        //var d1 = [[0,0], [2,3], [3,2], [5,8]];
+        //var d2 = [[0,0], [1,5], [3,8], [5,9]];
+        var line1 = { label: "Clicks", data: d1 };
+        var line2 = { label: "Conversions", data: d2 };
+
+        var options = {
+            series: {
+                bars: { show: true, 
+                        barWidth : 60*1000, //1m
+                        fill: true},
+                points: { show: false }
+            },
+            xaxis: { mode: "time" },
+            legend: { position: 'nw' }
+        };
+
+        $.plot($(placeholder), [line1, line2], options);
+
+    //} catch(x) {}
 }
 
 function SetRefreshInterval(interval) {
