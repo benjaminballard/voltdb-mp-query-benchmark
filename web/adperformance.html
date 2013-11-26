@@ -66,27 +66,37 @@
 
     <div class="container">
 
+      <!-- flot chart -->
+      <div class="row">
+        <div class="col-md-8">
+          <h4>Live Responses</h4>
+          <div id="chart1" style="height:200px;"></div>
+        </div>
+        <div class="col-md-4">
+        </div>
+      </div>
 
-    <!-- Data tables -->
-    <div class="row">
-      <div class="col-md-8">
-        <h4>Advertiser Daily Summary</h4>
-        <table class="table table-bordered table-condensed table-hover table-volt" id="table_ad_sum">
-        </table>
-      </div>
-      <div class="col-md-4">
-      </div>
-    </div>
 
-    <div class="row">
-      <div class="col-md-8">
-        <h4>Campaign Daily Summary</h4>
-        <table class="table table-bordered table-striped table-condensed table-volt" id="table_camp_sum">
-        </table>
+      <!-- Data tables -->
+      <div class="row">
+        <div class="col-md-8">
+          <h4>Campaign Performance</h4>
+          <table class="table table-bordered table-condensed table-hover table-volt" id="table_ad_sum">
+          </table>
+        </div>
+        <div class="col-md-4">
+        </div>
       </div>
-      <div class="col-md-4">
+
+      <div class="row">
+        <div class="col-md-8">
+          <h4>Banner Performance</h4>
+          <table class="table table-bordered table-striped table-condensed table-volt" id="table_camp_sum">
+          </table>
+        </div>
+        <div class="col-md-4">
+        </div>
       </div>
-    </div>
 
     </div>
 
@@ -94,9 +104,12 @@
     <script src="js/jquery-1.10.2.min.js"></script>
     <script src="http://localhost:8080/studio/js/voltdb.js"></script>
     <script src="js/voltdb-dashboard.js"></script>
-    <script src="adperformance.js"></script>
+    <script src="js/jquery.flot.js"></script>
+    <script src="js/jquery.flot.time.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/holder.js"></script>
+    <script src="adperformance.js"></script>
+
     
   </body>
 </html>

@@ -157,6 +157,12 @@ SELECT
 FROM event_data
 GROUP BY advertiser_id, TRUNCATE(MINUTE,utc_time);
 
+CREATE PROCEDURE advertiser_minutely_clicks AS
+SELECT utc_min, clicks, conversions
+FROM advertiser_rates_minutely
+WHERE advertiser_id = ? 
+ORDER BY utc_min DESC LIMIT 30;
+
 -- CREATE VIEW ad_campaign_creative_rates_minutely AS
 -- SELECT advertiser_id, campaign_id, creative_id, TRUNCATE(MINUTE,utc_time) as utc_min, COUNT(*) AS records, SUM(is_impression) AS impressions, SUM(is_clickthrough) AS clicks, SUM(is_conversion) as conversions
 -- FROM event_data
