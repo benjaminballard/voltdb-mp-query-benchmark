@@ -60,16 +60,22 @@ public class BenchmarkConfig extends CLIConfig {
     int sites = 1000;
 
     @Option(desc = "Pages per Site")
-     int pagespersite = 10;
+    int pagespersite = 10;
 
     @Option(desc = "Number of Advertisers")
-     int advertisers = 1000;
+    int advertisers = 1000;
 
     @Option(desc = "Campaigns per Site")
-     int campaignsperadvertiser = 10;
+    int campaignsperadvertiser = 10;
 
     @Option(desc = "Creatives per Campaign")
-     int creativespercampaign = 10;
+    int creativespercampaign = 10;
+
+    @Option(desc = "Percent Queries")
+    int percentqueries = 50;
+
+    @Option(desc = "Percent Queries")
+    String queryname = "advertiser_summary";
 
     public BenchmarkConfig() {
     }

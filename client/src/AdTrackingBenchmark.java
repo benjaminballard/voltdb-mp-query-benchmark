@@ -29,6 +29,10 @@ public class AdTrackingBenchmark extends BaseBenchmark {
     private BigDecimal bd0 = new BigDecimal(0);
     private long startTime = new TimestampType(System.currentTimeMillis()*1000).getTime();
 
+    // query ratio
+    private int percentQueries = 0;
+    private String queryName;
+
     // inventory pre-sets
     private int sites = 1000;
     private int pagesPerSite = 20;
@@ -55,6 +59,8 @@ public class AdTrackingBenchmark extends BaseBenchmark {
         campaignsPerAdvertiser = config.campaignsperadvertiser;
         creativesPerCampaign = config.creativespercampaign;
         modulus = creativesPerCampaign*3;
+        percentQueries = config.percentqueries;
+        queryName = config.queryname;
     }
 
     public void initialize() throws Exception {
@@ -96,41 +102,34 @@ public class AdTrackingBenchmark extends BaseBenchmark {
     }
 
     public void iterate() throws Exception {
-
-        // generate an impression
         
-        // each iteration is 1 millisecond later
-        // the faster the throughput rate, the faster time flies!
-        // this is to get more interesting hourly or minutely results
-        iteration++;
-        TimestampType ts = new TimestampType(startTime+(iteration*1000)); 
+        if (rand.nextInt(100)+1 <= percentQueries) {
+            // query
 
-        // random IP address
-        int ipAddress = 
-            rand.nextInt(256)*256*256*256 +
-            rand.nextInt(256)*256*256 +
-            rand.nextInt(256)*256 +
-            rand.nextInt(256);
+        } else {
+            // write
+            
 
-        long cookieUID = (long)rand.nextInt(1000000000);
-        int creative = rand.nextInt(creativeMaxID)+1;
-        int inventory = rand.nextInt(inventoryMaxID)+1;
-        BigDecimal cost = new BigDecimal(rand.nextDouble()/5,mc);
+            // generate an impression
+        
+            // each iteration is 1 millisecond later
+            // the faster the throughput rate, the faster time flies!
+            // this is to get more interesting hourly or minutely results
+            iteration++;
+            TimestampType ts = new TimestampType(startTime+(iteration*1000)); 
 
-        client.callProcedure(new BenchmarkCallback("TrackEvent"),
-                             "TrackEvent",
-                             ts,
-                             ipAddress,
-                             cookieUID,
-                             creative,
-                             inventory,
-                             0,
-                             cost);
+            // random IP address
+            int ipAddress = 
+                rand.nextInt(256)*256*256*256 +
+                rand.nextInt(256)*256*256 +
+                rand.nextInt(256)*256 +
+                rand.nextInt(256);
 
-        int i = rand.nextInt(100);
-        int r = creative % modulus;
-        // sometimes generate a click-through
-        if ( (r==0 && i<10) || i == 0) { // 1% of the time at least, for 1/3 of campaigns 10% of the time
+            long cookieUID = (long)rand.nextInt(1000000000);
+            int creative = rand.nextInt(creativeMaxID)+1;
+            int inventory = rand.nextInt(inventoryMaxID)+1;
+            BigDecimal cost = new BigDecimal(rand.nextDouble()/5,mc);
+
             client.callProcedure(new BenchmarkCallback("TrackEvent"),
                                  "TrackEvent",
                                  ts,
@@ -138,11 +137,13 @@ public class AdTrackingBenchmark extends BaseBenchmark {
                                  cookieUID,
                                  creative,
                                  inventory,
-                                 1,
-                                 bd0);
+                                 0,
+                                 cost);
 
-            // 33% conversion rate
-            if ( rand.nextInt(2) == 0 ) {
+            int i = rand.nextInt(100);
+            int r = creative % modulus;
+            // sometimes generate a click-through
+            if ( (r==0 && i<10) || i == 0) { // 1% of the time at least, for 1/3 of campaigns 10% of the time
                 client.callProcedure(new BenchmarkCallback("TrackEvent"),
                                      "TrackEvent",
                                      ts,
@@ -150,8 +151,21 @@ public class AdTrackingBenchmark extends BaseBenchmark {
                                      cookieUID,
                                      creative,
                                      inventory,
-                                     2,
+                                     1,
                                      bd0);
+
+                // 33% conversion rate
+                if ( rand.nextInt(2) == 0 ) {
+                    client.callProcedure(new BenchmarkCallback("TrackEvent"),
+                                         "TrackEvent",
+                                         ts,
+                                         ipAddress,
+                                         cookieUID,
+                                         creative,
+                                         inventory,
+                                         2,
+                                         bd0);
+                }
             }
         }
     }
