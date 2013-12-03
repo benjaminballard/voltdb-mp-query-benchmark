@@ -74,7 +74,7 @@ public class BenchmarkConfig extends CLIConfig {
     @Option(desc = "Percent Queries")
     int percentqueries = 50;
 
-    @Option(desc = "Percent Queries")
+    @Option(desc = "Query Name")
     String queryname = "advertiser_summary";
 
     public BenchmarkConfig() {

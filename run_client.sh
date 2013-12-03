@@ -35,7 +35,7 @@ java -classpath obj:$CLASSPATH:obj -Dlog4j.configuration=file://$VOLTDB_HOME/vol
     client.AdTrackingBenchmark \
     --displayinterval=5 \
     --warmup=5 \
-    --duration=600 \
+    --duration=20 \
     --servers=$SERVERS \
     --ratelimit=20000 \
     --autotune=true \
@@ -44,4 +44,6 @@ java -classpath obj:$CLASSPATH:obj -Dlog4j.configuration=file://$VOLTDB_HOME/vol
     --pagespersite=10 \
     --advertisers=100 \
     --campaignsperadvertiser=10 \
-    --creativespercampaign=5
+    --creativespercampaign=5 \
+    --percentqueries=100 \
+    --queryname=advertiser_summary

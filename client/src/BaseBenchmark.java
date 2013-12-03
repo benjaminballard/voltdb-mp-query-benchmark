@@ -253,6 +253,9 @@ public abstract class BaseBenchmark {
         //client.callProcedure("Initialize", config.contestants, CONTESTANT_NAMES_CSV);
         initialize();
 
+        // block until all outstanding txns return
+        client.drain();
+
         // Run the benchmark loop for the requested warmup time
         // The throughput may be throttled depending on client configuration
         System.out.println("Warming up for the specified "+ config.warmup +" seconds...");

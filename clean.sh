@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # clean up temp files & folders in this project
-
+rm -rf log
 
 # db
 cd db

@@ -105,6 +105,10 @@ public class AdTrackingBenchmark extends BaseBenchmark {
         
         if (rand.nextInt(100)+1 <= percentQueries) {
             // query
+            client.callProcedure(new BenchmarkCallback(queryName),
+                                 queryName,
+                                 rand.nextInt(advertisers)+1
+                                 );
 
         } else {
             // write
@@ -178,6 +182,7 @@ public class AdTrackingBenchmark extends BaseBenchmark {
         BenchmarkCallback.printProcedureResults("INVENTORY.insert");
         BenchmarkCallback.printProcedureResults("CREATIVES.insert");
         BenchmarkCallback.printProcedureResults("TrackEvent");
+        BenchmarkCallback.printProcedureResults(queryName);
 
         super.printResults();
     }
