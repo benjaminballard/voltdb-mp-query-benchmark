@@ -77,6 +77,9 @@ public class BenchmarkConfig extends CLIConfig {
     @Option(desc = "Query Name")
     String queryname = "advertiser_summary";
 
+    @Option(desc = "Skip Initialize")
+    boolean skipinit = false;
+
     public BenchmarkConfig() {
     }
 

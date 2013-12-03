@@ -64,38 +64,41 @@ public class AdTrackingBenchmark extends BaseBenchmark {
     }
 
     public void initialize() throws Exception {
+        
+        if (config.skipinit=false) {
 
-        // generate inventory
-        System.out.println("Loading Inventory table based on " + sites + 
-                           " sites and " + pagesPerSite + " pages per site...");
-        for (int i=1; i<=sites; i++) {
-            for (int j=1; j<=pagesPerSite; j++) {
-                inventoryMaxID++;
-                client.callProcedure(new BenchmarkCallback("INVENTORY.insert"),
-                                     "INVENTORY.insert",
-                                     inventoryMaxID,
-                                     i,
-                                     j);
-                // show progress
-                if (inventoryMaxID % 5000 == 0) System.out.println("  " + inventoryMaxID);
-            }
-        }
-
-        // generate creatives
-        System.out.println("Loading Creatives table based on " + advertisers + 
-                           " advertisers, each with " + campaignsPerAdvertiser + 
-                           " campaigns, each with " + creativesPerCampaign + " creatives...");
-        for (int advertiser=1; advertiser<=advertisers; advertiser++) {
-            for (int campaign=1; campaign<=campaignsPerAdvertiser; campaign++) {
-                for (int i=1; i<=creativesPerCampaign; i++) {
-                    creativeMaxID++;
-                    client.callProcedure(new BenchmarkCallback("CREATIVES.insert"),
-                                         "CREATIVES.insert",
-                                         creativeMaxID,
-                                         campaign,
-                                         advertiser);
+            // generate inventory
+            System.out.println("Loading Inventory table based on " + sites + 
+                               " sites and " + pagesPerSite + " pages per site...");
+            for (int i=1; i<=sites; i++) {
+                for (int j=1; j<=pagesPerSite; j++) {
+                    inventoryMaxID++;
+                    client.callProcedure(new BenchmarkCallback("INVENTORY.insert"),
+                                         "INVENTORY.insert",
+                                         inventoryMaxID,
+                                         i,
+                                         j);
                     // show progress
-                    if (creativeMaxID % 5000 == 0) System.out.println("  " + creativeMaxID);
+                    if (inventoryMaxID % 5000 == 0) System.out.println("  " + inventoryMaxID);
+                }
+            }
+
+            // generate creatives
+            System.out.println("Loading Creatives table based on " + advertisers + 
+                               " advertisers, each with " + campaignsPerAdvertiser + 
+                               " campaigns, each with " + creativesPerCampaign + " creatives...");
+            for (int advertiser=1; advertiser<=advertisers; advertiser++) {
+                for (int campaign=1; campaign<=campaignsPerAdvertiser; campaign++) {
+                    for (int i=1; i<=creativesPerCampaign; i++) {
+                        creativeMaxID++;
+                        client.callProcedure(new BenchmarkCallback("CREATIVES.insert"),
+                                             "CREATIVES.insert",
+                                             creativeMaxID,
+                                             campaign,
+                                             advertiser);
+                        // show progress
+                        if (creativeMaxID % 5000 == 0) System.out.println("  " + creativeMaxID);
+                    }
                 }
             }
         }
