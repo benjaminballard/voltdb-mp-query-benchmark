@@ -39,7 +39,11 @@ Instructions
 
 3. Open the web/adperformance.html page in a web browser to view the real-time dashboard
 
-4. To stop the database and clean up temp files
+4. Run the query client application
+
+    ./run_query_client.sh
+
+5. To stop the database and clean up temp files
 
     voltadmin shutdown
     ./clean.sh
@@ -63,6 +67,14 @@ Metadata volumes and ratios:
     --advertisers=100             (number of advertisers)
     --campaignsperadvertiser=10   (number of campaigns per advertiser)
     --creativespercampaign=5      (number of creatives or banners per campaign)
+
+You can also set the following parameters in the run_query_client.sh script to change the behavior of the query benchmark:
+
+    --duration=120                  (benchmark duration in seconds)
+    --autotune=true                 (true = ignore rate limit, run at max throughput until latency is impacted)
+                                    (false = run at the specified rate limit)
+    --ratelimit=20000               (when autotune=false, run up to this rate of requests/second)
+    --queryname=advertiser_summary  (the other option: =advertiser_minutely_clicks)
 
 Instructions for running on a cluster
 -------------------------------------
