@@ -1,5 +1,7 @@
 # VoltDB Example App: Ad Performance#
 
+This repository is a variant of the VoltDB Ad Performance example application, with an additional query benchmark for testing Multi-partition queries.
+
 Use Case
 --------
 This application simulates a high velocity stream of events (impressions, clickthroughs, conversions) that are enriched and ingested.  These events are randomly generated in the client, but represent a stream of events that would be received from web traffic.

@@ -60,8 +60,9 @@ public class AdTrackingBenchmark extends BaseBenchmark {
     public void initialize() throws Exception {
 
         // long load initialize data if none has been loaded before.
-        int advertisersLoaded = client.callProcedure("SELECT COUNT(*) FROM advertisers;").getResults()[0].asScalarLong();
-        if (advertisersLoaded == 0) {
+        int creativesLoaded = (int)client.callProcedure("@AdHoc","SELECT COUNT(*) FROM creatives;").getResults()[0].asScalarLong();
+        System.out.println("Found " + creativesLoaded + " creatives previously loaded.");
+        if (creativesLoaded == 0) {
 
             // generate inventory
             System.out.println("Loading Inventory table based on " + sites + 

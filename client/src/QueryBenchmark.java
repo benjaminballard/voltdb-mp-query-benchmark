@@ -38,8 +38,11 @@ public class QueryBenchmark extends BaseBenchmark {
     }
 
     public void initialize() throws Exception {
-        // get count of advertisers loaded
-        advertisers = client.callProcedure("SELECT COUNT(*) FROM advertisers;").getResults()[0].asScalarLong();
+        // check if data already initialized
+        int creatives = (int)client.callProcedure("@AdHoc","SELECT COUNT(*) FROM creatives;").getResults()[0].asScalarLong();
+        if (creatives > 0) {
+            advertisers = (int)client.callProcedure("@AdHoc","SELECT MAX(advertiser_id) FROM creatives;").getResults()[0].asScalarLong();
+        }
     }
 
     public void iterate() throws Exception {
