@@ -38,7 +38,8 @@ java -classpath obj:$CLASSPATH:obj -Dlog4j.configuration=file://$VOLTDB_HOME/vol
     --duration=60 \
     --servers=$SERVERS \
     --ratelimit=10000 \
-    --autotune=false \
+    --autotune=true \
     --latencytarget=1 \
-    --queryname=advertiser_summary
+    --queryname=AdvertiserSummary
+#    --queryname=advertiser_summary
 
