@@ -108,6 +108,11 @@ FROM campaign_rates
 WHERE advertiser_id = ? 
 ORDER BY campaign_id;
 
+CREATE PROCEDURE advertiser_simple_summary AS
+SELECT * 
+FROM campaign_rates 
+WHERE advertiser_id = ?
+ORDER BY campaign_id;
 
 CREATE VIEW creative_rates AS
 SELECT 
@@ -162,4 +167,5 @@ CREATE PROCEDURE FROM CLASS procedures.TrackEvent;
 PARTITION PROCEDURE TrackEvent ON TABLE event_data COLUMN creative_id PARAMETER 3;
 
 CREATE PROCEDURE FROM CLASS procedures.AdvertiserSummary;
+CREATE PROCEDURE FROM CLASS procedures.AdvertiserSimpleSummary;
 
