@@ -21,7 +21,20 @@ import org.voltdb.*;
 public class AdvertiserSummary extends VoltProcedure {
 
     public final SQLStmt qry1 = new SQLStmt(
-        "SELECT campaign_id, advertiser_id FROM creatives WHERE creative_id = ?;");
+	"SELECT "+
+	"  campaign_id,"+
+	"  cost as spent,"+
+	"  impressions,"+
+	"  1000*cost/impressions as cpm,"+
+	"  clicks,"+
+	"  CAST(clicks AS DECIMAL)/impressions AS ctr,"+
+	"  cost/DECODE(clicks,0,null,clicks) as cpc,"+
+	"  conversions,"+
+	"  CAST(conversions AS DECIMAL)/DECODE(clicks,0,null,clicks) as convr,"+
+	"  cost/DECODE(conversions,0,null,conversions) as cpconv "+
+	"FROM campaign_rates "+
+	"WHERE advertiser_id = ? "+
+	"ORDER BY campaign_id;");
 
     public VoltTable[] run( int advertiserId
 		     ) throws VoltAbortException {
