@@ -111,8 +111,7 @@ ORDER BY campaign_id;
 CREATE PROCEDURE advertiser_simple_summary AS
 SELECT * 
 FROM campaign_rates 
-WHERE advertiser_id = ?
-ORDER BY campaign_id;
+WHERE advertiser_id = ? AND campaign_id = 1;
 
 CREATE VIEW creative_rates AS
 SELECT 
@@ -161,6 +160,7 @@ SELECT utc_min, clicks, conversions
 FROM advertiser_rates_minutely
 WHERE advertiser_id = ? 
 ORDER BY utc_min DESC LIMIT 30;
+
 
 
 CREATE PROCEDURE FROM CLASS procedures.TrackEvent;
